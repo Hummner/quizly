@@ -1,0 +1,44 @@
+# 🐍 Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class
+
+# 📦 Virtual Environment
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# 🧰 Django & Projekt-Dateien
+*.sqlite3
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+
+# 🧪 Test & Coverage
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# 🛠 IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 🔐 Geheimnisse & Konfiguration
+.env
+.env.local
+.env.*
+*.secret
+*.key
