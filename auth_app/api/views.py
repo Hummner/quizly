@@ -4,9 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class RegisterView(APIView):
-    
-
-
     def post(self, request):
         serilaizer = RegisterSerializer(data=request.data)
 
@@ -15,3 +12,6 @@ class RegisterView(APIView):
             serilaizer.save()
 
         return Response({"detail": "User created successfully"}, status=status.HTTP_201_CREATED)
+    
+class LoginView(APIView):
+    pass
