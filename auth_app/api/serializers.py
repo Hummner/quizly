@@ -42,21 +42,21 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
-
     def validate(self, attrs):
         username = attrs['username']
         password = attrs['password']
-
+        
 
         try:
             user = User.objects.get(username=username)
+            print(user.email)
         except User.DoesNotExist:
             raise serializers.ValidationError('Wrong username or password 1')
         
-        if not user.check_password(user.password):
+        if not user.check_password(password):
             raise serializers.ValidationError('Wrong username or password 2')
 
         data = super().validate({"username": user.username, "password": password})
-        
+        data['user'] = user
         return data
         
