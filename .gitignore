@@ -13,6 +13,7 @@ env/
 ENV/
 env.bak/
 venv.bak/
+media/
 
 # 🧰 Django & Projekt-Dateien
 *.sqlite3
