@@ -54,7 +54,7 @@ class RefreshToken(TokenRefreshView):
         refresh_token = request.COOKIES.get('refresh_token')
 
         if refresh_token is None:
-            raise Response({'message': 'Refresh Token is not found'})
+            return Response({'message': 'Refresh Token is not found'}, status=status.HTTP_401_UNAUTHORIZED)
         
         serializer = self.get_serializer(data={'refresh': refresh_token})
         serializer.is_valid(raise_exception=True)
