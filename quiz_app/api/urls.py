@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import QuziCreateView, QuizzesViewset
+from .views import QuizzesViewset
 from rest_framework.routers import SimpleRouter
 
 router = SimpleRouter()
-router.register(r"quizess", QuizzesViewset, basename="quizess")
+router.register(r"quizzes", QuizzesViewset, basename="quizzes")
 
 urlpatterns = router.urls
