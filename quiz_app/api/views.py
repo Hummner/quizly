@@ -5,6 +5,7 @@ from .serializers import QuizCreateURLSerializer, QuizModelSerializer, QuizCreat
 from rest_framework.response import Response
 from .authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from ..models import Quiz
 
 
 class QuziCreateView(APIView):
@@ -48,6 +49,7 @@ class QuziCreateView(APIView):
 
 
 class QuizzesViewset(viewsets.ModelViewSet):
+    queryset = Quiz.objects.all()
     serializer_class = QuizModelSerializer
     authentication_classes = [CookieJWTAuthentication]
     permission_classes = [IsAuthenticated]

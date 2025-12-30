@@ -10,15 +10,7 @@ class QuizCreateURLSerializer(serializers.Serializer):
 
         return super().validate(attrs)
     
-class QuizModelSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(
-        queryset=Question.objects.all(),
-        many=True
-    )
 
-    class Meta:
-        model = Quiz
-        fields = ['id', 'title', 'questions', 'created_at', 'updated_at', 'video_url', 'description']
 
 class QuizQuestionsSerializer(serializers.ModelSerializer):
     question_options = serializers.ListField(
@@ -27,7 +19,17 @@ class QuizQuestionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['id','question_options', 'answer', 'created_at', 'updated_at', 'question_title']
+        fields = ['id','question_options', 'answer', 'created_at', 'updated_at', 'question_title']   
+
+
+class QuizModelSerializer(serializers.ModelSerializer):
+    questions = QuizQuestionsSerializer(source="quiz_question", many=True, read_only=True)
+
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'questions', 'created_at', 'updated_at', 'video_url', 'description']
+
+
 
 
 class QuizCreateSerializer(serializers.ModelSerializer):
