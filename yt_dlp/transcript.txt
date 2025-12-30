@@ -1,0 +1,155 @@
+Based on the following transcript, generate a quiz in valid JSON format.
+
+The quiz must follow this exact structure:
+
+{{
+
+  "title": "Create a concise quiz title based on the topic of the transcript.",
+
+  "description": "Summarize the transcript in no more than 150 characters. Do not include any quiz questions or answers.",
+
+  "questions": [
+
+    {{
+
+      "question_title": "The question goes here.",
+
+      "question_options": ["Option A", "Option B", "Option C", "Option D"],
+
+      "answer": "The correct answer from the above options"
+
+    }},
+
+    ...
+
+    (exactly 10 questions)
+
+  ]
+
+}}
+
+Requirements:
+
+- Each question must have exactly 4 distinct answer options.
+
+- Only one correct answer is allowed per question, and it must be present in 'question_options'.
+
+- The output must be valid JSON and parsable as-is (e.g., using Python's json.loads).
+
+- Do not include explanations, comments, or any text outside the JSON.
+
+
+
+
+
+answer:
+
+
+```json
+{
+  "title": "Exploring Planet Mercury",
+  "description": "A quiz about Mercury, the closest planet to the Sun, covering its extreme temperatures, surface features, atmospheric conditions, and challenges for exploration.",
+  "questions": [
+    {
+      "question_title": "What is Mercury's position relative to the Sun?",
+      "question_options": [
+        "Second closest",
+        "Closest",
+        "Third closest",
+        "Furthest"
+      ],
+      "answer": "Closest"
+    },
+    {
+      "question_title": "Why does Mercury experience extreme temperature fluctuations?",
+      "question_options": [
+        "It has a thick atmosphere",
+        "It is very far from the Sun",
+        "Its thin exosphere cannot retain heat",
+        "It has active volcanoes"
+      ],
+      "answer": "Its thin exosphere cannot retain heat"
+    },
+    {
+      "question_title": "What is the approximate daytime temperature on Mercury?",
+      "question_options": [
+        "100 degrees Celsius",
+        "20 degrees Celsius",
+        "Minus 180 degrees Celsius",
+        "430 degrees Celsius"
+      ],
+      "answer": "430 degrees Celsius"
+    },
+    {
+      "question_title": "To what approximate temperature does Mercury's surface drop at night?",
+      "question_options": [
+        "Minus 10 degrees Celsius",
+        "50 degrees Celsius",
+        "Minus 180 degrees Celsius",
+        "430 degrees Celsius"
+      ],
+      "answer": "Minus 180 degrees Celsius"
+    },
+    {
+      "question_title": "What is a consequence of Mercury's lack of a proper atmosphere?",
+      "question_options": [
+        "It has strong winds",
+        "No protection from solar radiation",
+        "It supports liquid water",
+        "It has frequent rain"
+      ],
+      "answer": "No protection from solar radiation"
+    },
+    {
+      "question_title": "How much more solar energy does Mercury receive compared to Earth?",
+      "question_options": [
+        "Almost two times",
+        "Almost five times",
+        "Almost seven times",
+        "Almost ten times"
+      ],
+      "answer": "Almost seven times"
+    },
+    {
+      "question_title": "What characterizes Mercury's surface terrain?",
+      "question_options": [
+        "Smooth plains and oceans",
+        "Dense forests and rivers",
+        "Active volcanoes and glaciers",
+        "Craters, cliffs, and rough terrain"
+      ],
+      "answer": "Craters, cliffs, and rough terrain"
+    },
+    {
+      "question_title": "What is a significant challenge for landing a spacecraft on Mercury due to its atmospheric conditions?",
+      "question_options": [
+        "High air resistance",
+        "Strong magnetic fields",
+        "Low air resistance making slowing down difficult",
+        "Frequent dust storms"
+      ],
+      "answer": "Low air resistance making slowing down difficult"
+    },
+    {
+      "question_title": "What is the maximum temperature NASA spacesuits can handle, which Mercury's daytime temperature exceeds?",
+      "question_options": [
+        "50 degrees Celsius",
+        "121 degrees Celsius",
+        "250 degrees Celsius",
+        "400 degrees Celsius"
+      ],
+      "answer": "121 degrees Celsius"
+    },
+    {
+      "question_title": "Which area on Mercury is described as moderately survivable?",
+      "question_options": [
+        "The polar caps",
+        "The equator",
+        "The deepest craters",
+        "The Terminator Zone"
+      ],
+      "answer": "The Terminator Zone"
+    }
+  ]
+}
+```
