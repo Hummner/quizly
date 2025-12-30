@@ -4,6 +4,7 @@ import whisper
 import subprocess
 from google import genai
 import os
+import re
 
 
 
@@ -18,17 +19,25 @@ class AudioConverter():
 
     def run(self):
         try:
-            self.youtube_download()
-            self.convert_audio()
-            text = self.whisper()
-            return self.gemini_api(text)
+            # self.youtube_download()
+            # self.convert_audio()
+            # text = self.whisper()
+            # with open("respond.txt", "r") as f:
+            #     text = f.read()
+            # gemini_respond = self.gemini_api(text)
+            # clean_text = self.strip_code_fence(gemini_respond)
+            # return json.loads(clean_text)
+            with open("respond.txt", "r") as t:
+                text = t.read()
+            return json.loads(text)
         
         except Exception as e:
             print(f"Fehler in run(): {e}")
             raise  # wirft GENAU den gleichen Fehler erneut
 
         finally:
-            self.cleanup()
+            pass
+            # self.cleanup()
 
     def youtube_download(self):
         tmp_filename = f"media/{self.username}/temp_audio_{self.username}.%(ext)s"
@@ -128,12 +137,20 @@ class AudioConverter():
         if os.path.isdir(user_dir) and not os.listdir(user_dir):
             os.rmdir(user_dir)
 
+    def strip_code_fence(self, text: str):
+        text = text.strip()
+        text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.IGNORECASE)
+        text = re.sub(r"\s*```$", "", text)
+        return text.strip()
+
 
 new_object = AudioConverter(url = 'https://www.youtube.com/watch?v=GU81TzgPENA', username="bence")
 
 
 quiz = new_object.run()
-with open("quiz_test.txt", "w", encoding="utf-8") as f:
-    f.write(quiz)
+
+# with open("quiz_test.json", "w", encoding="utf-8") as f:
+#     f.write(quiz)
+
 
 

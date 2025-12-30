@@ -1,0 +1,106 @@
+{
+  "title": "Planetary Extremes Quiz",
+  "description": "Test your knowledge of the solar system's planets, from Mercury's temperature swings to Neptune's fierce winds and Venus's crushing pressure.",
+  "questions": [
+    {
+      "question_title": "What is the primary reason Mercury cannot retain heat, leading to extreme temperature fluctuations?",
+      "question_options": [
+        "Its distance from the Sun",
+        "Its rapid rotation",
+        "Its thin exosphere",
+        "Its rocky surface"
+      ],
+      "answer": "Its thin exosphere"
+    },
+    {
+      "question_title": "Which of the following is the main reason Venus has a surface temperature hotter than Mercury, despite being farther from the Sun?",
+      "question_options": [
+        "Its faster rotation speed",
+        "Its thick clouds of sulfuric acid",
+        "The runaway greenhouse effect",
+        "Its metallic core generating heat"
+      ],
+      "answer": "The runaway greenhouse effect"
+    },
+    {
+      "question_title": "What makes liquid water difficult to exist for long on the surface of Mars?",
+      "question_options": [
+        "Its extreme cold temperatures",
+        "Its frequent dust storms",
+        "Its low air pressure",
+        "Its high radiation exposure"
+      ],
+      "answer": "Its low air pressure"
+    },
+    {
+      "question_title": "What characteristic of Jupiter poses the greatest immediate threat to humans and most spacecraft electronics?",
+      "question_options": [
+        "Its immense gravitational pull",
+        "Its strong magnetic field and intense radiation",
+        "Its rapid atmospheric winds",
+        "Its superheated core temperature"
+      ],
+      "answer": "Its strong magnetic field and intense radiation"
+    },
+    {
+      "question_title": "What is a distinctive feature of Saturn's atmosphere, particularly at its poles?",
+      "question_options": [
+        "A massive circular storm",
+        "A massive hexagonal storm system",
+        "Constant lightning storms",
+        "Sulfuric acid clouds"
+      ],
+      "answer": "A massive hexagonal storm system"
+    },
+    {
+      "question_title": "What unique orbital characteristic distinguishes Uranus from all other planets in our solar system?",
+      "question_options": [
+        "It orbits the Sun in reverse",
+        "It rotates on its side",
+        "It has the longest orbital period",
+        "It has the fastest rotation speed"
+      ],
+      "answer": "It rotates on its side"
+    },
+    {
+      "question_title": "Which planet is known for experiencing the fastest winds in the solar system, reaching speeds of 2,000 kilometers per hour?",
+      "question_options": [
+        "Jupiter",
+        "Saturn",
+        "Uranus",
+        "Neptune"
+      ],
+      "answer": "Neptune"
+    },
+    {
+      "question_title": "Which of these planets is known to experience 'diamond rain' due to immense pressure on carbon atoms?",
+      "question_options": [
+        "Mars and Jupiter",
+        "Venus and Saturn",
+        "Uranus and Neptune",
+        "Mercury and Venus"
+      ],
+      "answer": "Uranus and Neptune"
+    },
+    {
+      "question_title": "Which planet has atmospheric pressure about 92 bars, equivalent to the pressure found 900 meters underwater on Earth?",
+      "question_options": [
+        "Mercury",
+        "Mars",
+        "Venus",
+        "Jupiter"
+      ],
+      "answer": "Venus"
+    },
+    {
+      "question_title": "Which planet is described as a 'gas giant' with no solid surface and primarily composed of hydrogen and helium?",
+      "question_options": [
+        "Mars",
+        "Venus",
+        "Jupiter",
+        "Uranus"
+      ],
+      "answer": "Jupiter"
+    }
+  ]
+}
