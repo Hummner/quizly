@@ -49,12 +49,11 @@ class CustomTokenSerializer(TokenObtainPairSerializer):
 
         try:
             user = User.objects.get(username=username)
-            print(user.email)
         except User.DoesNotExist:
-            raise serializers.ValidationError('Wrong username or password 1')
+            raise serializers.ValidationError('Wrong username or password')
         
         if not user.check_password(password):
-            raise serializers.ValidationError('Wrong username or password 2')
+            raise serializers.ValidationError('Wrong username or password')
 
         data = super().validate({"username": user.username, "password": password})
         data['user'] = user

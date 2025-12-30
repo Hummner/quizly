@@ -144,10 +144,10 @@ class AudioConverter():
         return text.strip()
 
 
-new_object = AudioConverter(url = 'https://www.youtube.com/watch?v=GU81TzgPENA', username="bence")
+# new_object = AudioConverter(url = 'https://www.youtube.com/watch?v=GU81TzgPENA', username="bence")
 
 
-quiz = new_object.run()
+# quiz = new_object.run()
 
 # with open("quiz_test.json", "w", encoding="utf-8") as f:
 #     f.write(quiz)
