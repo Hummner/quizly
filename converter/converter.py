@@ -19,25 +19,25 @@ class AudioConverter():
 
     def run(self):
         try:
-            # self.youtube_download()
-            # self.convert_audio()
-            # text = self.whisper()
+            self.youtube_download()
+            self.convert_audio()
+            text = self.whisper()
             # with open("respond.txt", "r") as f:
             #     text = f.read()
-            # gemini_respond = self.gemini_api(text)
-            # clean_text = self.strip_code_fence(gemini_respond)
-            # return json.loads(clean_text)
-            with open("respond.txt", "r") as t:
-                text = t.read()
-            return json.loads(text)
+            gemini_respond = self.gemini_api(text)
+            clean_text = self.strip_code_fence(gemini_respond)
+            return json.loads(clean_text)
+            # with open("respond.txt", "r") as t:
+            #     text = t.read()
+            # return json.loads(text)
         
         except Exception as e:
             print(f"Fehler in run(): {e}")
             raise  # wirft GENAU den gleichen Fehler erneut
 
         finally:
-            pass
-            # self.cleanup()
+            
+            self.cleanup()
 
     def youtube_download(self):
         tmp_filename = f"media/{self.username}/temp_audio_{self.username}.%(ext)s"

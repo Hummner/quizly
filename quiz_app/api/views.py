@@ -1,26 +1,20 @@
 from converter.converter import AudioConverter
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.views import APIView
 from .serializers import QuizCreateURLSerializer, QuizModelSerializer, QuizCreateSerializer
 from rest_framework.response import Response
 from .authentication import CookieJWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from ..models import Quiz
+from .permissions import IsQuizOwner
 
-class QuizzesViewset(viewsets.ModelViewSet):
-    queryset = Quiz.objects.all()
-    serializer_class = QuizModelSerializer
+
+
+class CreateQuizView(APIView):
     authentication_classes = [CookieJWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        qs = Quiz.objects.filter(owner=self.request.user)
-        return qs.select_related('owner').prefetch_related('quiz_question')
-
-
-
-
-    def create(self, request, *args, **kwargs):
+    def post(self, request):
         serilaizer_url = QuizCreateURLSerializer(data=request.data)
         serilaizer_url.is_valid(raise_exception=True)
         url = serilaizer_url.validated_data['url']
@@ -51,3 +45,29 @@ class QuizzesViewset(viewsets.ModelViewSet):
         instance = create_serializer.save()
 
         return QuizModelSerializer(instance).data
+
+
+class QuizzesViewset(
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizModelSerializer
+    authentication_classes = [CookieJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        if self.action in ['list', 'retrive']:
+            qs = Quiz.objects.filter(owner=self.request.user)
+            return qs.select_related('owner').prefetch_related('quiz_question')
+        
+        return Quiz.objects.all()
+    
+
+    def get_permissions(self):
+        if self.action in ['destroy', 'partial_update', 'update']:
+            return [IsQuizOwner()]
+        return super().get_permissions()

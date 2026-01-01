@@ -1,12 +1,32 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from ..models import Quiz, Question
+import re
+
+YOUTUBE_REGEX = re.compile(
+    r"(https?://)?(www\.)?"
+    r"(youtube\.com/(watch\?v=|embed/|shorts/)|youtu\.be/)"
+    r"(?P<id>[A-Za-z0-9_-]{11})")
 
 
 class QuizCreateURLSerializer(serializers.Serializer):
     url = serializers.CharField(write_only=True)
-    def validate(self, attrs):
+    
+    def validate_url(self, value):
+        return self.normalize_youtube_url(value)
+    
+    def normalize_youtube_url(self, value: str) -> str:
+        match = re.search(
+            r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})",
+            value
+        )
+        if not match:
+            raise serializers.ValidationError(
+                "Enter a valid YouTube video URL."
+            )
 
-        return super().validate(attrs)
+        video_id = match.group(1)
+
+        return f"https://www.youtube.com/watch?v={video_id}"
     
 
 
@@ -22,9 +42,20 @@ class QuizQuestionsSerializer(serializers.ModelSerializer):
 class QuizModelSerializer(serializers.ModelSerializer):
     questions = QuizQuestionsSerializer(source="quiz_question", many=True, read_only=True)
 
+    def validate(self, attrs):
+
+        request_fields = self.initial_data.keys()
+        allow_fields = ['title', 'description']
+        for field in request_fields:
+            if field not in allow_fields:
+                raise serializers.ValidationError({field: "This field cannot be modified."})
+
+        return super().validate(attrs)
+
     class Meta:
         model = Quiz
         fields = ['id', 'title', 'questions', 'created_at', 'updated_at', 'video_url', 'description']
+        read_only_fields = ['created_at', 'updated_at', 'video_url']
 
 
 class QuizCreateSerializer(serializers.ModelSerializer):
