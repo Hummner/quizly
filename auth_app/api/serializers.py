@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import re
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -17,14 +18,21 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Password and confirmation password do not match.')
         
         if User.objects.filter(username=username).exists():
-            raise serializers.ValidationError('Username email is already registered.')
+            raise serializers.ValidationError({'error':'Username or email is already registered.'})
         
         if User.objects.filter(email=email).exists():
-            raise serializers.ValidationError({'error':'Email is already registered.'})
+            raise serializers.ValidationError({'error': 'Username or email is already registered.'})
         
-        
-
         return attrs
+    
+    def validate_password(self, value):
+        pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{6,}$'
+        if not re.match(pattern, value):
+            raise serializers.ValidationError(
+                'Password must be at least 6 characters and include an uppercase letter, a lowercase letter, and a number.'
+            )
+        return value
+
     
     def create(self, validated_data):
         password = validated_data.pop('password')
