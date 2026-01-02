@@ -75,22 +75,6 @@ class QuizModelSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
-    def validate(self, attrs):
-        """
-        Prevents modification of fields
-        other than title and description.
-        """
-        request_fields = self.initial_data.keys()
-        allow_fields = ['title', 'description']
-
-        for field in request_fields:
-            if field not in allow_fields:
-                raise serializers.ValidationError({
-                    field: "This field cannot be modified."
-                })
-
-        return super().validate(attrs)
-
     class Meta:
         model = Quiz
         fields = [
