@@ -6,7 +6,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializers import CustomTokenSerializer
 
 class RegisterView(APIView):
+    """
+    API endpoint for user registration.
+    Handles incoming requests to create a new user.
+    """
     def post(self, request):
+        """
+        Handles POST requests.
+        Validates incoming data and creates a new user if valid.
+        """
         serilaizer = RegisterSerializer(data=request.data)
 
         if serilaizer.is_valid(raise_exception=True):
@@ -16,9 +24,25 @@ class RegisterView(APIView):
         return Response({"detail": "User created successfully"}, status=status.HTTP_201_CREATED)
     
 class LoginView(TokenObtainPairView):
+    """
+    Handles user login and JWT token generation.
+
+    Extends TokenObtainPairView to authenticate the user,
+    return basic user data, and store access and refresh
+    tokens securely in HTTP-only cookies.
+    """
+
     serializer_class = CustomTokenSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+        Handles POST login requests.
+
+        Authenticates the user, retrieves access and refresh tokens,
+        returns user information in the response body, and
+        stores the tokens in secure HTTP-only cookies.
+        """
+
         response = super().post(request, *args, **kwargs)
         access_token = response.data.get('access')
         refresh_token = response.data.get('refresh')
@@ -45,24 +69,37 @@ class LoginView(TokenObtainPairView):
             secure=True,
             httponly=True
         )
-        
+
         return response
-    
+
+
 class RefreshToken(TokenRefreshView):
+    """
+    Handles access token renewal using the refresh token
+    stored in HTTP-only cookies.
+    """
+
     def post(self, request, *args, **kwargs):
-        
+        """
+        Reads the refresh token from cookies, validates it,
+        generates a new access token, and updates the cookie.
+        """
+
         refresh_token = request.COOKIES.get('refresh_token')
 
         if refresh_token is None:
-            return Response({'message': 'Refresh Token is not found'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+            return Response(
+                {'message': 'Refresh Token is not found'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         serializer = self.get_serializer(data={'refresh': refresh_token})
         serializer.is_valid(raise_exception=True)
-        access_token= serializer.validated_data.get('access')
+        access_token = serializer.validated_data.get('access')
 
         response = Response({
-              "detail": "Token refreshed",
-                "access": access_token
+            'detail': 'Token refreshed',
+            'access': access_token
         })
 
         response.set_cookie(
