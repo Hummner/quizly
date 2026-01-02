@@ -5,16 +5,30 @@ import re
 YOUTUBE_REGEX = re.compile(
     r"(https?://)?(www\.)?"
     r"(youtube\.com/(watch\?v=|embed/|shorts/)|youtu\.be/)"
-    r"(?P<id>[A-Za-z0-9_-]{11})")
+    r"(?P<id>[A-Za-z0-9_-]{11})"
+)
 
 
 class QuizCreateURLSerializer(serializers.Serializer):
+    """
+    Serializer for validating and normalizing
+    a YouTube video URL.
+    """
+
     url = serializers.CharField(write_only=True)
-    
+
     def validate_url(self, value):
+        """
+        Validates the URL and converts it
+        to a standard YouTube watch URL.
+        """
         return self.normalize_youtube_url(value)
-    
+
     def normalize_youtube_url(self, value: str) -> str:
+        """
+        Extracts the video ID from different
+        YouTube URL formats.
+        """
         match = re.search(
             r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})",
             value
@@ -25,62 +39,106 @@ class QuizCreateURLSerializer(serializers.Serializer):
             )
 
         video_id = match.group(1)
-
         return f"https://www.youtube.com/watch?v={video_id}"
-    
 
 
 class QuizQuestionsSerializer(serializers.ModelSerializer):
+    """
+    Serializer for quiz questions.
+    """
+
     question_options = serializers.ListField(
-        child=serializers.CharField())
+        child=serializers.CharField()
+    )
 
     class Meta:
         model = Question
-        fields = ['id','question_options', 'answer', 'created_at', 'updated_at', 'question_title']   
+        fields = [
+            'id',
+            'question_options',
+            'answer',
+            'created_at',
+            'updated_at',
+            'question_title'
+        ]
 
 
 class QuizModelSerializer(serializers.ModelSerializer):
-    questions = QuizQuestionsSerializer(source="quiz_question", many=True, read_only=True)
+    """
+    Serializer for displaying quiz data
+    including related questions.
+    """
+
+    questions = QuizQuestionsSerializer(
+        source="quiz_question",
+        many=True,
+        read_only=True
+    )
 
     def validate(self, attrs):
-
+        """
+        Prevents modification of fields
+        other than title and description.
+        """
         request_fields = self.initial_data.keys()
         allow_fields = ['title', 'description']
+
         for field in request_fields:
             if field not in allow_fields:
-                raise serializers.ValidationError({field: "This field cannot be modified."})
+                raise serializers.ValidationError({
+                    field: "This field cannot be modified."
+                })
 
         return super().validate(attrs)
 
     class Meta:
         model = Quiz
-        fields = ['id', 'title', 'questions', 'created_at', 'updated_at', 'video_url', 'description']
+        fields = [
+            'id',
+            'title',
+            'questions',
+            'created_at',
+            'updated_at',
+            'video_url',
+            'description'
+        ]
         read_only_fields = ['created_at', 'updated_at', 'video_url']
 
 
 class QuizCreateSerializer(serializers.ModelSerializer):
-        questions = QuizQuestionsSerializer(many=True)
+    """
+    Serializer for creating a quiz
+    with nested questions.
+    """
 
-        def create(self, validated_data):
-            questions_data = validated_data.pop('questions')
-            user = self.context['request'].user
-            quiz = Quiz.objects.create(owner=user, **validated_data)
+    questions = QuizQuestionsSerializer(many=True)
 
-            for q in questions_data:
-                Question.objects.create(quiz=quiz, **q)
-            return quiz
-        
-        
-        
+    def create(self, validated_data):
+        """
+        Creates a quiz and its related questions.
+        """
+        questions_data = validated_data.pop('questions')
+        user = self.context['request'].user
+        quiz = Quiz.objects.create(owner=user, **validated_data)
 
-        class Meta:
-            model = Quiz
-            fields = ['id', 'title', 'owner', 'questions', 'created_at', 'updated_at', 'video_url', 'description']
-            extra_kwargs = {
-                'questions': {
-                    'read_only': True
-                },
-                'owner': {
-                    'read_only': True
-                }
-            }
+        for q in questions_data:
+            Question.objects.create(quiz=quiz, **q)
+
+        return quiz
+
+    class Meta:
+        model = Quiz
+        fields = [
+            'id',
+            'title',
+            'owner',
+            'questions',
+            'created_at',
+            'updated_at',
+            'video_url',
+            'description'
+        ]
+        extra_kwargs = {
+            'questions': {'read_only': True},
+            'owner': {'read_only': True}
+        }
