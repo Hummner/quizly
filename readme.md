@@ -48,10 +48,9 @@ You need a Gemini API key to use this feature.
 
 ## Installation (Localhost)
 
-### 1. Clone the repository
-```bash
-git clone <YOUR_REPOSITORY_URL>
-cd quizly
+### 1. Clone the repository (Windows)
+```cmd
+git clone https://github.com/Hummner/quizly.git .
 ```
 
 ---
@@ -73,7 +72,7 @@ source .venv/bin/activate
 ---
 
 ### 3. Install dependencies
-```bash
+```cmd
 pip install -r requirements.txt
 ```
 
