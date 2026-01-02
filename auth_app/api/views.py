@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .serializers import CustomTokenSerializer
+from .authentication import CookieJWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class RegisterView(APIView):
     """
@@ -110,3 +112,34 @@ class RefreshToken(TokenRefreshView):
         )
 
         return response
+    
+class LogoutView(APIView):
+    """
+    API endpoint for user logout.
+
+    Requires authentication and removes JWT tokens
+    stored in HTTP-only cookies.
+    """
+
+    authentication_classes = [CookieJWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """
+        Handles POST logout requests.
+
+        Deletes access and refresh tokens from cookies
+        and returns a logout confirmation response.
+        """
+
+        response = Response({
+            "detail": "Log-Out successfully! All Tokens will be deleted. Refresh token is now invalid."
+        })
+
+        response.delete_cookie(key='access_token')
+        response.delete_cookie(key='refresh_token')
+
+        return response
+
+
+
