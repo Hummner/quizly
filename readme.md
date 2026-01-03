@@ -1,181 +1,158 @@
 # Quizly 🎥🧠
 
-Quizly is a Django web application that generates an AI-powered quiz from a YouTube video.
+Quizly is a Django web application that automatically generates an AI-powered quiz from a YouTube video.  
+Quiz questions are created using **Google Gemini**, while **FFmpeg** is used for audio and video processing.
 
 ---
 
 ## Features
-- Generate quizzes from YouTube videos
-- AI-powered question generation using Gemini
-- Local development setup
-- FFmpeg support for audio/video processing
+
+- Generate quizzes from YouTube videos  
+- AI-powered question generation using Google Gemini  
+- Strict JSON output format  
+- FFmpeg support for audio and video processing  
+- Local development setup  
 
 ---
 
 ## Requirements
-- Python 3.10 or higher
+
+- Python **3.10 or higher**
 - pip
 - FFmpeg
-- Gemini API Key (`GEMINI_API_KEY`)
+- Google Gemini API Key
 
 ---
 
-## How to get a Gemini API Key
+# Setup (Windows)
 
-Quizly uses Google Gemini for AI-powered quiz generation.  
-You need a Gemini API key to use this feature.
+## 1. Install FFmpeg
 
-### Steps
+FFmpeg is required for processing video and audio files.
 
-1. Open the Google AI Studio:
-   https://aistudio.google.com/
+### Installation
 
-2. Sign in with your Google account.
+1. Download FFmpeg (for example from gyan.dev or BtbN builds)
+2. Extract it to:
+   ```
+   C:\ffmpeg\
+   ```
+3. Make sure the following file exists:
+   ```
+   C:\ffmpeg\bin\ffmpeg.exe
+   ```
 
-3. Click on **“Get API key”** or **“Create API key”**.
+### Add FFmpeg to PATH
 
-4. Create a new API key for your project.
+1. Open **Start Menu** → search for **Environment Variables**
+2. Click **Edit the system environment variables**
+3. Click **Environment Variables...**
+4. Under **User variables** or **System variables**, select `Path` → **Edit**
+5. Click **New** and add:
+   ```
+   C:\ffmpeg\bin
+   ```
+6. Save and restart your terminal
 
-5. Copy the generated key.
-
-6. Set the key as an environment variable called: GEMINI_API_KEY
-
-⚠️ **Important**
-- Do not share your API key publicly.
-- Never commit your API key to GitHub.
-- Always use environment variables for secrets.
-
-
-## Installation (Localhost)
-
-### 1. Clone the repository (Windows)
+### Verify installation
 ```cmd
+ffmpeg -version
+```
+
+---
+
+## 2. Create a Gemini API Key
+
+1. Open Google AI Studio  
+   https://aistudio.google.com/
+2. Sign in with your Google account
+3. Click **Get API key** or **Create API key**
+4. Create a new API key
+5. Copy the key
+
+⚠️ Important:
+- Never share your API key
+- Never commit your API key to GitHub
+
+---
+
+## 3. Clone the repository
+
+```bash
 git clone https://github.com/Hummner/quizly.git .
 ```
 
 ---
 
-### 2. Create and activate a virtual environment
+## 4. Create a virtual environment
 
-#### Windows (CMD)
-```cmd
+```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-#### macOS / Linux
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
 ---
 
-### 3. Install dependencies
-```cmd
+## 5. Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## Environment Variables
+## 6. Create a `.env` file
 
-Quizly requires a Gemini API key stored in an environment variable.
+Create a `.env` file in the **project root**:
 
-### GEMINI_API_KEY
-
-#### Windows (CMD) - Temporary
-```cmd
-set GEMINI_API_KEY=your_api_key_here
+```
+quizly/
+├── .env
+├── manage.py
+├── requirements.txt
+└── ...
 ```
 
-#### Windows (CMD) - Permanent
-1. Open **Start Menu** → search **Environment Variables**
-2. Click **Edit the system environment variables**
-3. Click **Environment Variables...**
-4. Under **User variables**, click **New**
-   - Name: `GEMINI_API_KEY`
-   - Value: `your_api_key_here`
-5. Confirm with **OK**
-
-Restart your terminal after setting the variable.
+### `.env` content
+```env
+GEMINI_API_KEY=your_api_key_here
+```
 
 ---
 
-#### macOS / Linux - Temporary
+## 7. Django setup
+
+### Apply migrations
 ```bash
-export GEMINI_API_KEY="your_api_key_here"
+python manage.py migrate
 ```
 
-#### macOS / Linux - Permanent
-Add this line to `~/.bashrc`, `~/.zshrc`, or `~/.profile`:
+### Create superuser (optional)
 ```bash
-export GEMINI_API_KEY="your_api_key_here"
+python manage.py createsuperuser
 ```
 
-Reload:
+### Run development server
 ```bash
-source ~/.bashrc
+python manage.py runserver
+```
+
+Open in your browser:
+```
+http://127.0.0.1:8000/
 ```
 
 ---
 
-### Verify environment variable
+# Setup (macOS / Linux)
 
-#### Windows
-```cmd
-echo %GEMINI_API_KEY%
-```
+## 1. Install FFmpeg
 
-#### macOS / Linux
-```bash
-echo $GEMINI_API_KEY
-```
-
----
-
-## FFmpeg Installation
-
-FFmpeg is required for processing video and audio files.
-
----
-
-### Windows
-
-1. Download FFmpeg (e.g. gyan.dev or BtbN builds)
-2. Extract to:
-   ```
-   C:\ffmpeg\
-   ```
-3. Make sure this file exists:
-   ```
-   C:\ffmpeg\bin\ffmpeg.exe
-   ```
-
-#### Add FFmpeg to PATH
-1. Open **Environment Variables**
-2. Under **User variables** or **System variables**, select `Path`
-3. Click **Edit** → **New**
-4. Add:
-   ```
-   C:\ffmpeg\bin
-   ```
-5. Save and restart CMD
-
-#### Verify
-```cmd
-ffmpeg -version
-```
-
----
-
-### macOS
+### macOS (Homebrew)
 ```bash
 brew install ffmpeg
 ffmpeg -version
 ```
-
----
 
 ### Linux (Debian / Ubuntu)
 ```bash
@@ -186,30 +163,53 @@ ffmpeg -version
 
 ---
 
-## Django Setup
+## 2. Create a Gemini API Key
 
-### Apply migrations
+1. Open Google AI Studio  
+   https://aistudio.google.com/
+2. Sign in and create an API key
+3. Copy the key
+
+---
+
+## 3. Clone the repository
+
+```bash
+git clone https://github.com/Hummner/quizly.git .
+```
+
+---
+
+## 4. Create a virtual environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+---
+
+## 5. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 6. Create `.env` file
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+---
+
+## 7. Run Django
+
 ```bash
 python manage.py migrate
-```
-
----
-
-### Create superuser (optional)
-```bash
-python manage.py createsuperuser
-```
-
----
-
-### Run development server
-```bash
 python manage.py runserver
-```
-
-Open in browser:
-```
-http://127.0.0.1:8000/
 ```
 
 ---
@@ -217,29 +217,15 @@ http://127.0.0.1:8000/
 ## Common Issues
 
 ### FFmpeg not found (Windows)
-- Ensure `C:\ffmpeg\bin` is in PATH
-- Restart the terminal
-- Verify:
 ```cmd
 where ffmpeg
 ```
+- Ensure `C:\ffmpeg\bin` is in your PATH
+- Restart the terminal
 
 ---
 
-### GEMINI_API_KEY not found
-- Check if the variable is set
-```cmd
-echo %GEMINI_API_KEY%
-```
-or
-```bash
-echo $GEMINI_API_KEY
-```
-
----
-
-## Notes
-- Do not commit API keys to version control
-- Use environment variables for secrets
-
----
+### `.env` file not loaded
+- Make sure `.env` is in the project root
+- Ensure `python-dotenv` is installed
+- Restart the Django server

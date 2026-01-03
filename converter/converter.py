@@ -5,6 +5,7 @@ import subprocess
 from google import genai
 import os
 import re
+from django.conf import settings
 
 
 class AudioConverter():
@@ -125,7 +126,7 @@ class AudioConverter():
         - 4 options per question
         - exactly one correct answer matching one of the options
         """
-        client = genai.Client()
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
         promp = f"""{text} --->
                         Based on the following transcript, generate a quiz in valid JSON format.
 
